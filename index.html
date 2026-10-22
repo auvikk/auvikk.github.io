@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auvik Kumar Biswas | Portfolio</title>
+<meta name="description" content="Auvik Kumar Biswas: SIT-DigiPen student in Singapore. Graphics programming, real-time simulation, networking, collision detection and pathfinding.">
+<style>
+  :root {
+    --bg: #0b0f17;
+    --bg-2: #111827;
+    --card: #141b2b;
+    --line: #243049;
+    --text: #e6ebf5;
+    --muted: #93a0b8;
+    --accent: #4fd1c5;
+    --accent-2: #7c9cff;
+    --hot: #ff7a90;
+    --radius: 14px;
+    --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* Placeholder text still to be confirmed or replaced */
+  .ph { background: rgba(255, 196, 0, .14); border-bottom: 1px dashed #ffc400; border-radius: 3px; padding: 0 3px; }
+
+  /* Nav */
+  nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); background: rgba(11, 15, 23, .82); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-family: var(--mono); font-weight: 700; color: var(--text); }
+  .brand span { color: var(--accent); }
+  nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
+  nav ul a { color: var(--muted); font-size: .95rem; }
+  nav ul a:hover { color: var(--text); text-decoration: none; }
+
+  /* Hero */
+  .hero { position: relative; overflow: hidden; padding: 110px 0 100px; }
+  #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .hero .wrap { position: relative; z-index: 1; pointer-events: none; }
+  .hero .wrap a, .hero .wrap .btn { pointer-events: auto; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: center; }
+  .portrait img {
+    display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: top center;
+    border-radius: 28px; border: 2px solid var(--line);
+    box-shadow: 0 0 0 7px rgba(79, 209, 197, .12), 0 30px 60px rgba(0, 0, 0, .5);
+  }
+  .eyebrow { color: var(--accent); font-family: var(--mono); font-size: .95rem; }
+  h1 { font-size: clamp(2.3rem, 7vw, 4.4rem); line-height: 1.08; margin: 12px 0 18px; letter-spacing: -.02em; }
+  h1 .grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { max-width: 640px; color: var(--muted); font-size: 1.15rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .btn { display: inline-block; padding: 12px 22px; border-radius: 10px; font-weight: 600; border: 1px solid var(--line); color: var(--text); background: rgba(11,15,23,.55); transition: transform .15s, border-color .15s; }
+  .btn:hover { transform: translateY(-2px); border-color: var(--accent); text-decoration: none; }
+  .btn.primary { background: var(--accent); color: #05221f; border-color: var(--accent); }
+  .hint { margin-top: 26px; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+  .hint::before { content: "\25B8  "; color: var(--accent); }
+
+  /* Stats strip */
+  .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); }
+  .stats .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding-top: 26px; padding-bottom: 26px; }
+  .stat b { display: block; font-size: 2rem; line-height: 1.1; background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat span { color: var(--muted); font-size: .9rem; }
+
+  /* Sections */
+  section { padding: 80px 0; }
+  section + section { border-top: 1px solid var(--line); }
+  h2 { font-size: 1.9rem; margin: 0 0 8px; letter-spacing: -.01em; }
+  h2::before { content: "// "; color: var(--accent); font-family: var(--mono); }
+  .sub { color: var(--muted); margin: 0 0 36px; max-width: 660px; }
+
+  /* About */
+  .about { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
+  .term { background: #070a10; border: 1px solid var(--line); border-radius: var(--radius); font-family: var(--mono); font-size: .88rem; overflow: hidden; }
+  .term-bar { display: flex; gap: 7px; padding: 10px 14px; background: var(--bg-2); border-bottom: 1px solid var(--line); }
+  .term-bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
+  .term-bar i:nth-child(1) { background: #ff5f57; } .term-bar i:nth-child(2) { background: #febc2e; } .term-bar i:nth-child(3) { background: #28c840; }
+  .term pre { margin: 0; padding: 16px; white-space: pre-wrap; color: var(--text); }
+  .term .p { color: var(--accent); } .term .c { color: var(--muted); }
+
+  /* Skills */
+  .skill-group { margin-bottom: 24px; }
+  .skill-group h3 { font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { padding: 7px 14px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: .92rem; }
+  .chip.wip { border-style: dashed; color: var(--muted); }
+
+  /* Projects */
+  .featured { background: linear-gradient(160deg, var(--card), var(--bg-2)); border: 1px solid var(--line); border-radius: 18px; padding: 34px; margin-bottom: 24px; }
+  .tag { color: var(--accent); font-family: var(--mono); font-size: .85rem; }
+  .featured h3 { font-size: 1.7rem; margin: 6px 0 10px; }
+  .featured p { color: var(--muted); max-width: 720px; }
+  .featured ul { padding-left: 20px; }
+  .featured li { margin: 6px 0; } .featured li::marker { color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: transform .2s, border-color .2s; }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent-2); }
+  .card h3 { margin: 4px 0 8px; font-size: 1.15rem; }
+  .card p { color: var(--muted); margin: 0 0 14px; font-size: .95rem; }
+  .card .chip { font-size: .8rem; padding: 4px 10px; }
+  .btn.small { padding: 8px 16px; font-size: .9rem; margin-top: 14px; }
+  .card.wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; align-items: center; }
+    .card img.shot { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #000; }
+  .yt { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+  .yt button { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+  .yt img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: .85; transition: opacity .2s; }
+  .yt button:hover img { opacity: 1; }
+  .yt .play { position: absolute; left: 50%; top: 50%; width: 68px; height: 68px; margin: -34px 0 0 -34px; border-radius: 50%; background: rgba(11, 15, 23, .75); border: 2px solid var(--accent); }
+  .yt .play::after { content: ""; position: absolute; left: 27px; top: 20px; border-style: solid; border-width: 13px 0 13px 21px; border-color: transparent transparent transparent var(--accent); }
+  .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-slot { aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; border-radius: 10px; font-size: .9rem; }
+  .card video { display: block; width: 100%; border-radius: 10px; border: 1px solid var(--line); background: #000; }
+
+  /* A* playground */
+  .lab { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+  .controls select, .controls button {
+    font: inherit; font-size: .9rem; color: var(--text); background: var(--bg-2); border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px 12px; cursor: pointer;
+  }
+  .controls button.go { background: var(--accent); color: #05221f; border-color: var(--accent); font-weight: 600; }
+  .controls button:hover, .controls select:hover { border-color: var(--accent); }
+  #astar-wrap { width: 100%; }
+  #astar { display: block; border-radius: 10px; background: #070a10; border: 1px solid var(--line); touch-action: none; cursor: crosshair; }
+  .readout { margin-top: 12px; font-family: var(--mono); font-size: .85rem; color: var(--accent); min-height: 1.4em; }
+  .note { margin-top: 8px; color: var(--muted); font-size: .88rem; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: .82rem; color: var(--muted); }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+  /* Experience */
+  .timeline { position: relative; margin-left: 8px; padding-left: 28px; border-left: 2px solid var(--line); }
+  .event { position: relative; margin-bottom: 30px; }
+  .event::before { content: ""; position: absolute; left: -37px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--bg); }
+  .event .when { font-family: var(--mono); font-size: .82rem; color: var(--accent-2); }
+  .event h3 { margin: 2px 0 4px; font-size: 1.15rem; }
+  .event p { margin: 0; color: var(--muted); max-width: 720px; }
+
+  /* Contact */
+  .contact { text-align: center; }
+  .contact .sub { margin-left: auto; margin-right: auto; }
+  .links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  footer { padding: 30px 0 50px; text-align: center; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .btn, .card { transition: none; }
+  }
+  @media (max-width: 720px) {
+    .about { grid-template-columns: 1fr; }
+    .stats .wrap { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    nav ul { gap: 14px; } nav ul a { font-size: .82rem; }
+    nav ul li:nth-child(1), nav ul li:nth-child(4) { display: none; }
+    .hero { padding: 70px 0 70px; }
+    section { padding: 56px 0; }
+    .featured { padding: 24px; }
+    .lab { padding: 14px; }
+    .grid { grid-template-columns: 1fr; }
+    .card.wide { grid-template-columns: 1fr; gap: 18px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 26px; }
+    .portrait { order: -1; }
+    .portrait img { width: 128px; aspect-ratio: 1; border-radius: 50%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">&lt;<span>auvik</span>/&gt;</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#lab">Playground</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+    <div class="eyebrow">Hi, I'm</div>
+    <h1><span class="grad">Auvik Kumar Biswas</span><br>I make real-time things fast.</h1>
+    <p class="lead">
+      SIT-DigiPen RTIS student in Singapore. I build graphics, game physics, collision systems and
+      pathfinding in C++, then profile them until they stop being slow.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#projects">See my work</a>
+      <a class="btn" href="#lab">Try the playground</a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </div>
+    <div class="hint">click and hold anywhere on this screen to grapple the balls</div>
+    </div>
+    <div class="portrait"><img src="assets/photo.jpg" alt="Portrait of Auvik Kumar Biswas" width="800" height="1024"></div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b>1st</b><span>RoboCup@Work, Asia-Pacific 2021 (Japan)</span></div>
+    <div class="stat"><b>7th</b><span>RoboCup@Work, 2021 Worldwide</span></div>
+    <div class="stat"><b>8</b><span>person team led as Product Manager, 7 months</span></div>
+    <div class="stat"><b>5</b><span>A* heuristics built and benchmarked</span></div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="wrap about reveal">
+    <div>
+      <h2>About me</h2>
+      <p class="sub">Performance thinking, applied to games and simulation.</p>
+      <p>
+        I'm studying Computer Science in Real-Time Interactive Simulation at DigiPen Institute of Technology Singapore (SIT-DigiPen), after a diploma in Computer Engineering at Singapore Polytechnic. I specialise in graphics programming, real-time simulation and networking.
+        My favourite problems are the ones where the clock is tight: a collision system that has to finish inside a
+        frame, a pathfinder that has to answer before the player notices.
+      </p>
+      <p>
+        I like to measure first, then optimise: benchmarking different bounding volumes, swapping a list for a binary
+        min-heap, initialising nodes lazily. I'm now learning how that story continues below the application, with
+        x86-64 assembly and the System V ABI, and I'd like to move towards performance testing and benchmarking
+        at the application and infrastructure level.
+      </p>
+      <p>
+        I also serve as President of the DigiPen Student Management Committee, and I used to command a
+        platoon as an infantry officer in the Singapore Armed Forces. Both taught me to communicate clearly and
+        follow issues through to the end.
+      </p>
+    </div>
+    <div class="term" role="img" aria-label="Terminal summary of Auvik">
+      <div class="term-bar"><i></i><i></i><i></i></div>
+<pre><span class="p">$</span> whoami
+auvik-kumar-biswas
+
+<span class="p">$</span> cat focus.txt
+<span class="c"># what I care about</span>
+real-time systems
+collision &amp; pathfinding
+profiling &amp; benchmarking
+
+<span class="p">$</span> ./status --now
+studying   DigiPen SG
+leading    Student Mgmt Committee
+learning   x86-64 assembly
+teaching   robotics &amp; coding
+seeking    internship
+           May 2027 - Apr 2028</pre>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap reveal">
+    <h2>Toolbox</h2>
+    <p class="sub">What I reach for.</p>
+    <div class="skill-group">
+      <h3>Languages</h3>
+      <div class="chips"><span class="chip">C++</span><span class="chip">C</span><span class="chip">C#</span><span class="chip">Java</span><span class="chip">JavaScript</span><span class="chip">Python</span><span class="chip">PHP</span><span class="chip">HTML and CSS</span><span class="chip wip">x86-64 assembly (learning)</span></div>
+    </div>
+    <div class="skill-group">
+      <h3>Performance and systems</h3>
+      <div class="chips"><span class="chip">Algorithmic optimisation</span><span class="chip">Benchmarking and profiling</span><span class="chip">Data structures and algorithms</span><span class="chip">System V ABI</span><span class="chip">OS and CPU stack</span></div>
+    </div>
+    <div class="skill-group">
+      <h3>Games, graphics and AI</h3>
+      <div class="chips"><span class="chip">OpenGL</span><span class="chip">Vulkan</span><span class="chip">Shader programming</span><span class="chip">Collision detection</span><span class="chip">Spatial data structures</span><span class="chip">Rigid-body physics</span><span class="chip">A* and pathfinding</span><span class="chip">N-gram models</span><span class="chip">Decision trees</span></div>
+    </div>
+    <div class="skill-group">
+      <h3>Networking and embedded</h3>
+      <div class="chips"><span class="chip">TCP/UDP networking</span><span class="chip">Embedded firmware (C)</span><span class="chip">Microcontrollers</span><span class="chip">Sensors and actuators</span><span class="chip">Telemetry and testing tools</span></div>
+    </div>
+    <div class="skill-group">
+      <h3>Tools and ways of working</h3>
+      <div class="chips"><span class="chip">Git</span><span class="chip">AutoCAD</span><span class="chip">Agile and iterative development</span><span class="chip">Product management</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap reveal">
+    <h2>Projects</h2>
+    <p class="sub">Things I've built, mostly at DigiPen.</p>
+
+    <article class="featured">
+      <div class="tag">Featured · DigiPen full-stack project</div>
+      <h3>PinPoint (BowlEye)</h3>
+      <p>An Android app that coaches bowling form using on-device pose detection, backed by its own account and video server, a project website and a self-hosted CI/CD pipeline.</p>
+      <ul>
+        <li><strong>Pose detection:</strong> CameraX frames go through MediaPipe's pose landmarker on the GPU at roughly 15 to 23 fps, driving a live skeleton overlay and step and phase detection.</li>
+        <li><strong>Native menu:</strong> the main menu is a C++ OpenGL ES game shell talking to Kotlin through a platform bridge.</li>
+        <li><strong>Backend:</strong> a Go API with SQLite, invite-only sign-up, hashed passwords, video uploads with limits and admin tools.</li>
+        <li><strong>Infrastructure:</strong> Jenkins builds, tests and deploys after each merge, with health checks and automatic rollback, continuous database backups and Telegram alerts.</li>
+      </ul>
+      <p><strong>My role:</strong> Live Feedback Manager, responsible for the live feedback side of the app.</p>
+      <div class="chips"><span class="chip">Kotlin</span><span class="chip">C++</span><span class="chip">MediaPipe</span><span class="chip">Go</span><span class="chip">SQLite</span><span class="chip">Jenkins</span></div>
+      <p style="margin-top:18px"><strong>Status:</strong> in active development. We are still working on it.</p>
+    </article>
+
+    <div class="grid">
+      <div class="card wide">
+        <div>
+          <div class="tag">Physics, collision and benchmarking</div>
+          <h3>Stretch</h3>
+          <p>Stretch is a grapple platformer. As Product Manager I coordinated scope, timeline and deliverables for an 8-person team over a 7-month agile cycle. As sole owner of physics and math, I wrote AABB collision, slope-based movement, rigid-body response and a grapple traversal mechanic (attach, extend, spring-back) from scratch.</p>
+          <p>I also built its spatial data structure and collision detection system in C++, and benchmarked bounding-volume approaches (Ritter's and PCA-based spheres) alongside ray casting for triangle intersection to compare their performance.</p>
+          <div class="chips"><span class="chip">C++</span><span class="chip">OpenGL</span><span class="chip">Physics</span><span class="chip">Benchmarking</span><span class="chip">Agile</span></div>
+        </div>
+        <div class="yt" data-id="ZUSnYsZhJVM"><button type="button" aria-label="Play the Stretch trailer"><img src="https://i.ytimg.com/vi/ZUSnYsZhJVM/hqdefault.jpg" alt="Stretch trailer thumbnail" loading="lazy"><span class="play"></span></button></div>
+      </div>
+      <div class="card wide">
+        <div>
+        <div class="tag">Game AI and pathfinding</div>
+        <h3>N Fighters</h3>
+        <p>N Fighters has an adaptive AI opponent. I led an N-gram model in C++ that reads the player's input history and predicts their next counter-move, so the opponent adapts to real-time strategy. I also built the core game loop and a coroutine-driven state machine.</p>
+        <p>In my pathfinding coursework I implemented A* with five heuristics, Floyd-Warshall and Goal Bounding, then cut computation time with a binary min-heap open list and lazy node initialisation. There's a live version of the idea in the playground below.</p>
+        <div class="chips"><span class="chip">C++</span><span class="chip">A*</span><span class="chip">N-gram model</span><span class="chip">State machines</span></div>
+          <a class="btn small" href="https://auvik.itch.io/stretch" rel="noopener">Download N Fighters on itch.io</a>
+        </div>
+        <img class="shot" src="assets/n-fighters.jpg" alt="N Fighters help screen showing the advantage cycle and move combos" loading="lazy" width="1280" height="883">
+      </div>
+      <div class="card wide">
+        <div>
+          <div class="tag">Single-player game · physics</div>
+          <h3>Dodge</h3>
+          <p>A single-player game in C++ where you move around an arena among bouncing balls. I built the whole collision system, the ball physics (trajectory, bounce, collision response) and the power-ups.</p>
+          <div class="chips"><span class="chip">C++</span><span class="chip">Ball physics</span><span class="chip">Collision response</span><span class="chip">Power-ups</span></div>
+        </div>
+        <video controls muted playsinline preload="metadata" aria-label="Dodge gameplay recording"><source src="assets/dodge.mp4" type="video/mp4"></video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lab">
+  <div class="wrap reveal">
+    <h2>Playground</h2>
+    <p class="sub">A small A* pathfinding lab. Draw walls, drag the start and goal, switch the heuristic, and watch how much work the search has to do.</p>
+    <div class="lab">
+      <div class="controls">
+        <button class="go" id="a-run" type="button">Run A*</button>
+        <label for="a-heur" class="note" style="margin:0">Heuristic</label>
+        <select id="a-heur">
+          <option value="octile">Octile</option>
+          <option value="euclid">Euclidean</option>
+          <option value="cheb">Chebyshev</option>
+          <option value="manh">Manhattan</option>
+          <option value="zero">None (Dijkstra)</option>
+        </select>
+        <button id="a-rand" type="button">Random walls</button>
+        <button id="a-clear" type="button">Clear</button>
+      </div>
+      <div id="astar-wrap"><canvas id="astar" aria-label="A* pathfinding grid"></canvas></div>
+      <div class="readout" id="a-out">Press Run A* to start.</div>
+      <div class="note" id="a-note"></div>
+      <div class="legend">
+        <span><i style="background:#4fd1c5"></i>start</span>
+        <span><i style="background:#ff7a90"></i>goal</span>
+        <span><i style="background:#2a3550"></i>wall</span>
+        <span><i style="background:rgba(124,156,255,.35)"></i>explored</span>
+        <span><i style="background:#ffd166"></i>path</span>
+      </div>
+      <p class="note">Written in JavaScript for this page to show the idea. My coursework version is in C++.</p>
+    </div>
+  </div>
+</section>
+
+<section id="journey">
+  <div class="wrap reveal">
+    <h2>Journey</h2>
+    <p class="sub">Leadership, teaching and a few other detours.</p>
+    <div class="timeline">
+      <div class="event">
+        <div class="when">2026 - Now</div>
+        <h3>President, DigiPen Student Management Committee</h3>
+        <p>Lead the committee that represents the student body, independently engaging faculty and students to organise events. Previously Year 1 Representative in 2025.</p>
+      </div>
+      <div class="event">
+        <div class="when">Sep 2024 - Apr 2028</div>
+        <h3>DigiPen Institute of Technology Singapore</h3>
+        <p>BSc (Hons) Computer Science in Real-Time Interactive Simulation (SIT-DigiPen). High- and low-level programming (including x86-64 assembly and the System V ABI), data structures, algorithm analysis, advanced computer graphics, AI for games and a trimester-long software engineering project.</p>
+      </div>
+      <div class="event">
+        <div class="when">Dec 2024 - Now</div>
+        <h3>Coding, Robotics and Math Trainer, PlayFACTO School</h3>
+        <p>Part-time. Introduce younger students to programming logic with Modi and block-based coding platforms, and guide upper-primary students in building and programming autonomous and remote-controlled robots with VEX GO and VEX IQ kits, weaving in patterns, algorithms and mental calculation.</p>
+      </div>
+      <div class="event">
+        <div class="when">Jun 2023 - May 2024</div>
+        <h3>Infantry Officer, Singapore Armed Forces</h3>
+        <p>Commissioned officer (LTA). Led a platoon through tactical exercises and live-fire training, coordinated logistics and mission planning, mentored junior soldiers and ran risk assessments to keep operations ready and safe.</p>
+      </div>
+      <div class="event">
+        <div class="when">Jan 2021 - Jan 2022</div>
+        <h3>RoboCup Intern, Robo Erectus (Singapore Polytechnic)</h3>
+        <p>Selected as 1 of 4 members of Singapore's Robo Erectus autonomous robotics team. Designed, built and programmed a competition robot, wrote embedded firmware and control logic, integrated sensors, actuators and perception pipelines, and built tools for telemetry and testing. Won 1st place at RoboCup Asia-Pacific 2021 (Japan) and 7th at RoboCup 2021 Worldwide, both in the RoboCup@Work League.</p>
+      </div>
+      <div class="event">
+        <div class="when">Apr 2019 - Mar 2022</div>
+        <h3>Singapore Polytechnic</h3>
+        <p>Diploma in Computer Engineering: Computer Engineering and Software track in Year 2, IoT and Intelligent Systems track in Year 3. Hands-on labs, embedded firmware, networking and cloud-connected solutions, plus mobile apps, data structures and algorithms, web programming and full-stack prototypes. Leadership Secretary of the Electrical and Electronic Engineering Club in 2021.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact reveal">
+    <h2>Let's talk</h2>
+    <p class="sub">I'm looking for an internship from May 2027 to April 2028 in Singapore (on-site or hybrid), and I'm open to collaborative projects in graphics, simulation and networked interactive systems. If that sounds like your team, I'd love to hear from you.</p>
+    <div class="links">
+      <a class="btn primary" href="mailto:auvikhanuman@gmail.com">auvikhanuman@gmail.com</a>
+      <a class="btn" href="https://linkedin.com/in/auvik" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/auvikk" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">&ldquo;The best way to predict the future is to invent it.&rdquo;<br>&copy; <span id="year">2026</span> Auvik Kumar Biswas. Built by hand with HTML, CSS and a bit of physics.</div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* YouTube: load the player only when clicked */
+document.querySelectorAll('.yt').forEach(function (box) {
+  var btn = box.querySelector('button');
+  btn.addEventListener('click', function () {
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/' + box.getAttribute('data-id') + '?autoplay=1&rel=0';
+    f.title = 'Stretch trailer';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    box.innerHTML = '';
+    box.appendChild(f);
+  });
+});
+
+/* Scroll reveal */
+(function () {
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { els.forEach(function (el) { el.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(function (el) { io.observe(el); });
+})();
+
+/* Hero: bouncing balls with ball-ball collisions; hold the pointer to grapple nearby balls */
+(function () {
+  var hero = document.getElementById('top');
+  var cv = document.getElementById('hero-canvas');
+  var ctx = cv.getContext('2d');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W = 0, H = 0, balls = [], visible = true, raf = 0;
+  var ptr = { x: 0, y: 0, down: false };
+  var GRAPPLE_RANGE = 280;
+
+  function seed() {
+    var n = Math.round(Math.min(34, Math.max(12, W / 30)));
+    balls = [];
+    for (var i = 0; i < n; i++) {
+      var r = 6 + Math.random() * 13;
+      balls.push({
+        x: r + Math.random() * (W - 2 * r), y: r + Math.random() * (H - 2 * r),
+        vx: (Math.random() - 0.5) * 1.6, vy: (Math.random() - 0.5) * 1.6,
+        r: r, m: r * r, hot: Math.random() < 0.18
+      });
+    }
+  }
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = hero.clientWidth; H = hero.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed();
+    draw();
+  }
+
+  function step() {
+    var i, j, b, o;
+    for (i = 0; i < balls.length; i++) {
+      b = balls[i];
+      if (ptr.down) {
+        var dx = ptr.x - b.x, dy = ptr.y - b.y, d = Math.sqrt(dx * dx + dy * dy);
+        b.grappled = d < GRAPPLE_RANGE && d > 1;
+        if (b.grappled) {
+          /* spring pull towards the pointer, with damping, like a grapple retracting */
+          b.vx += dx * 0.0016 - b.vx * 0.012;
+          b.vy += dy * 0.0016 - b.vy * 0.012;
+        }
+      } else {
+        b.grappled = false;
+      }
+      b.x += b.vx; b.y += b.vy;
+      if (b.x < b.r) { b.x = b.r; b.vx = Math.abs(b.vx); }
+      else if (b.x > W - b.r) { b.x = W - b.r; b.vx = -Math.abs(b.vx); }
+      if (b.y < b.r) { b.y = b.r; b.vy = Math.abs(b.vy); }
+      else if (b.y > H - b.r) { b.y = H - b.r; b.vy = -Math.abs(b.vy); }
+      var sp = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
+      if (sp > 6) { b.vx *= 6 / sp; b.vy *= 6 / sp; }
+      else if (sp < 0.35 && !b.grappled) { b.vx += (Math.random() - 0.5) * 0.2; b.vy += (Math.random() - 0.5) * 0.2; }
+    }
+    /* elastic circle-circle collision response */
+    for (i = 0; i < balls.length; i++) {
+      for (j = i + 1; j < balls.length; j++) {
+        b = balls[i]; o = balls[j];
+        var nx = o.x - b.x, ny = o.y - b.y, dist = Math.sqrt(nx * nx + ny * ny), min = b.r + o.r;
+        if (dist === 0 || dist >= min) continue;
+        nx /= dist; ny /= dist;
+        var overlap = (min - dist) / 2;
+        b.x -= nx * overlap; b.y -= ny * overlap; o.x += nx * overlap; o.y += ny * overlap;
+        var rv = (o.vx - b.vx) * nx + (o.vy - b.vy) * ny;
+        if (rv > 0) continue;
+        var imp = (2 * rv) / (b.m + o.m);
+        b.vx += imp * o.m * nx; b.vy += imp * o.m * ny;
+        o.vx -= imp * b.m * nx; o.vy -= imp * b.m * ny;
+      }
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    var i, b;
+    if (ptr.down) {
+      ctx.lineWidth = 1.2;
+      for (i = 0; i < balls.length; i++) {
+        b = balls[i];
+        if (!b.grappled) continue;
+        ctx.strokeStyle = 'rgba(79,209,197,.55)';
+        ctx.beginPath(); ctx.moveTo(ptr.x, ptr.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+      ctx.fillStyle = 'rgba(79,209,197,.9)';
+      ctx.beginPath(); ctx.arc(ptr.x, ptr.y, 4, 0, 6.2832); ctx.fill();
+    }
+    for (i = 0; i < balls.length; i++) {
+      b = balls[i];
+      ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.2832);
+      ctx.fillStyle = b.hot ? 'rgba(255,122,144,.16)' : 'rgba(124,156,255,.14)';
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = b.hot ? 'rgba(255,122,144,.7)' : (b.grappled ? 'rgba(79,209,197,.95)' : 'rgba(124,156,255,.55)');
+      ctx.stroke();
+    }
+  }
+
+  function loop() {
+    step(); draw();
+    raf = visible ? requestAnimationFrame(loop) : 0;
+  }
+
+  function setPtr(e) {
+    var r = hero.getBoundingClientRect();
+    ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
+  }
+  if (!reduce) {
+    hero.addEventListener('pointerdown', function (e) {
+      if (e.target.closest && e.target.closest('a, button')) return;
+      setPtr(e); ptr.down = true;
+    });
+    hero.addEventListener('pointermove', function (e) { if (ptr.down) setPtr(e); });
+    window.addEventListener('pointerup', function () { ptr.down = false; });
+    window.addEventListener('pointercancel', function () { ptr.down = false; });
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  if (reduce) return;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible && !raf) raf = requestAnimationFrame(loop);
+    }).observe(hero);
+  }
+  raf = requestAnimationFrame(loop);
+})();
+
+/* A* playground: 8-directional grid, binary min-heap open list */
+(function () {
+  var COLS = 26, ROWS = 13, SQRT2 = Math.SQRT2;
+  var cv = document.getElementById('astar');
+  var ctx = cv.getContext('2d');
+  var wrap = document.getElementById('astar-wrap');
+  var out = document.getElementById('a-out');
+  var noteEl = document.getElementById('a-note');
+  var sel = document.getElementById('a-heur');
+  var cell = 20, walls = new Uint8Array(COLS * ROWS);
+  var start = { x: 2, y: 6 }, goal = { x: 23, y: 6 };
+  var explored = null, path = null, shown = 0, anim = 0, hasRun = false;
+  var drag = null;
+
+  var NOTES = {
+    octile: 'Octile is the exact straight-line cost on an 8-direction grid, so it finds the shortest path and explores few cells.',
+    euclid: 'Euclidean never over-estimates, so the path is still shortest, but it under-estimates diagonals and explores more.',
+    cheb: 'Chebyshev treats a diagonal step as cost 1. It under-estimates here, so it is safe but explores more than Octile.',
+    manh: 'Manhattan over-estimates when diagonals are allowed. It explores fewer cells but the path may not be the shortest.',
+    zero: 'With no heuristic A* becomes Dijkstra: always correct, and it explores the most cells.'
+  };
+
+  function idx(x, y) { return y * COLS + x; }
+
+  function heur(kind, x, y) {
+    var dx = Math.abs(x - goal.x), dy = Math.abs(y - goal.y);
+    switch (kind) {
+      case 'manh': return dx + dy;
+      case 'euclid': return Math.sqrt(dx * dx + dy * dy);
+      case 'cheb': return Math.max(dx, dy);
+      case 'octile': return dx + dy + (SQRT2 - 2) * Math.min(dx, dy);
+      default: return 0;
+    }
+  }
+
+  /* Binary min-heap of node indices ordered by f, ties broken by lower h */
+  function Heap(f, h) { this.a = []; this.f = f; this.h = h; }
+  Heap.prototype.less = function (i, j) {
+    var p = this.a[i], q = this.a[j];
+    return this.f[p] < this.f[q] || (this.f[p] === this.f[q] && this.h[p] < this.h[q]);
+  };
+  Heap.prototype.push = function (n) {
+    var a = this.a, i = a.length; a.push(n);
+    while (i > 0) {
+      var p = (i - 1) >> 1;
+      if (!this.less(i, p)) break;
+      var t = a[i]; a[i] = a[p]; a[p] = t; i = p;
+    }
+  };
+  Heap.prototype.pop = function () {
+    var a = this.a, top = a[0], last = a.pop();
+    if (a.length) {
+      a[0] = last; var i = 0, n = a.length;
+      for (;;) {
+        var l = 2 * i + 1, r = l + 1, m = i;
+        if (l < n && this.less(l, m)) m = l;
+        if (r < n && this.less(r, m)) m = r;
+        if (m === i) break;
+        var t = a[i]; a[i] = a[m]; a[m] = t; i = m;
+      }
+    }
+    return top;
+  };
+
+  function search(kind) {
+    var N = COLS * ROWS, g = new Float64Array(N).fill(Infinity), f = new Float64Array(N), h = new Float64Array(N);
+    var parent = new Int32Array(N).fill(-1), closed = new Uint8Array(N), order = [];
+    var s = idx(start.x, start.y), t = idx(goal.x, goal.y);
+    var heap = new Heap(f, h);
+    g[s] = 0; h[s] = heur(kind, start.x, start.y); f[s] = h[s]; heap.push(s);
+    var found = false;
+    while (heap.a.length) {
+      var cur = heap.pop();
+      if (closed[cur]) continue;
+      closed[cur] = 1; order.push(cur);
+      if (cur === t) { found = true; break; }
+      var cx = cur % COLS, cy = (cur / COLS) | 0;
+      for (var dy = -1; dy <= 1; dy++) {
+        for (var dx = -1; dx <= 1; dx++) {
+          if (!dx && !dy) continue;
+          var nx = cx + dx, ny = cy + dy;
+          if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) continue;
+          var ni = idx(nx, ny);
+          if (walls[ni] || closed[ni]) continue;
+          /* no cutting corners around walls */
+          if (dx && dy && (walls[idx(cx + dx, cy)] || walls[idx(cx, cy + dy)])) continue;
+          var ng = g[cur] + (dx && dy ? SQRT2 : 1);
+          if (ng < g[ni]) {
+            g[ni] = ng; parent[ni] = cur; h[ni] = heur(kind, nx, ny); f[ni] = ng + h[ni]; heap.push(ni);
+          }
+        }
+      }
+    }
+    var p = null;
+    if (found) { p = []; for (var c = t; c !== -1; c = parent[c]) p.push(c); p.reverse(); }
+    return { order: order, path: p, length: found ? g[t] : -1 };
+  }
+
+  function size() {
+    var w = wrap.clientWidth;
+    cell = Math.max(10, Math.floor(w / COLS));
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = cell * COLS, ch = cell * ROWS;
+    cv.style.width = cw + 'px'; cv.style.height = ch + 'px';
+    cv.width = cw * dpr; cv.height = ch * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+
+  function draw() {
+    var x, y, i;
+    ctx.clearRect(0, 0, cell * COLS, cell * ROWS);
+    ctx.fillStyle = '#070a10'; ctx.fillRect(0, 0, cell * COLS, cell * ROWS);
+    if (explored) {
+      ctx.fillStyle = 'rgba(124,156,255,.35)';
+      for (i = 0; i < shown; i++) {
+        var e = explored[i];
+        ctx.fillRect((e % COLS) * cell + 1, ((e / COLS) | 0) * cell + 1, cell - 2, cell - 2);
+      }
+    }
+    for (i = 0; i < walls.length; i++) {
+      if (!walls[i]) continue;
+      ctx.fillStyle = '#2a3550';
+      ctx.fillRect((i % COLS) * cell, ((i / COLS) | 0) * cell, cell, cell);
+    }
+    ctx.strokeStyle = 'rgba(36,48,73,.55)'; ctx.lineWidth = 1; ctx.beginPath();
+    for (x = 0; x <= COLS; x++) { ctx.moveTo(x * cell + .5, 0); ctx.lineTo(x * cell + .5, ROWS * cell); }
+    for (y = 0; y <= ROWS; y++) { ctx.moveTo(0, y * cell + .5); ctx.lineTo(COLS * cell, y * cell + .5); }
+    ctx.stroke();
+    if (path && explored && shown >= explored.length) {
+      ctx.strokeStyle = '#ffd166'; ctx.lineWidth = Math.max(3, cell * 0.28); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.beginPath();
+      for (i = 0; i < path.length; i++) {
+        var px = (path[i] % COLS + .5) * cell, py = (((path[i] / COLS) | 0) + .5) * cell;
+        if (i) ctx.lineTo(px, py); else ctx.moveTo(px, py);
+      }
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#4fd1c5'; ctx.beginPath();
+    ctx.arc((start.x + .5) * cell, (start.y + .5) * cell, cell * .38, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = '#ff7a90'; ctx.beginPath();
+    ctx.arc((goal.x + .5) * cell, (goal.y + .5) * cell, cell * .38, 0, 6.2832); ctx.fill();
+  }
+
+  function run(animated) {
+    cancelAnimationFrame(anim);
+    var kind = sel.value;
+    var t0 = performance.now();
+    var r = search(kind);
+    var ms = performance.now() - t0;
+    explored = r.order; path = r.path; hasRun = true;
+    noteEl.textContent = NOTES[kind];
+    function report() {
+      out.textContent = (r.path
+        ? 'path length ' + r.length.toFixed(2)
+        : 'no path found') +
+        '  |  ' + r.order.length + ' cells explored  |  search ' + Math.max(1, Math.round(ms * 1000)) + ' µs';
+    }
+    if (!animated) { shown = explored.length; draw(); report(); return; }
+    shown = 0; out.textContent = 'searching...';
+    var per = Math.max(1, Math.ceil(explored.length / 90));
+    (function tick() {
+      shown = Math.min(explored.length, shown + per);
+      draw();
+      if (shown < explored.length) anim = requestAnimationFrame(tick); else report();
+    })();
+  }
+
+  function reset() {
+    cancelAnimationFrame(anim);
+    explored = null; path = null; shown = 0; hasRun = false;
+    out.textContent = 'Press Run A* to start.'; draw();
+  }
+
+  function cellAt(e) {
+    var r = cv.getBoundingClientRect();
+    var x = Math.floor((e.clientX - r.left) / cell), y = Math.floor((e.clientY - r.top) / cell);
+    if (x < 0 || y < 0 || x >= COLS || y >= ROWS) return null;
+    return { x: x, y: y };
+  }
+  function edit(c) {
+    if (!c) return;
+    if (drag === 'start') { if (!walls[idx(c.x, c.y)] && !(c.x === goal.x && c.y === goal.y)) { start = c; } }
+    else if (drag === 'goal') { if (!walls[idx(c.x, c.y)] && !(c.x === start.x && c.y === start.y)) { goal = c; } }
+    else {
+      if ((c.x === start.x && c.y === start.y) || (c.x === goal.x && c.y === goal.y)) return;
+      walls[idx(c.x, c.y)] = drag === 'draw' ? 1 : 0;
+    }
+    if (hasRun) run(false); else draw();
+  }
+
+  cv.addEventListener('pointerdown', function (e) {
+    var c = cellAt(e); if (!c) return;
+    cv.setPointerCapture(e.pointerId);
+    if (c.x === start.x && c.y === start.y) drag = 'start';
+    else if (c.x === goal.x && c.y === goal.y) drag = 'goal';
+    else drag = walls[idx(c.x, c.y)] ? 'erase' : 'draw';
+    edit(c);
+  });
+  cv.addEventListener('pointermove', function (e) { if (drag) edit(cellAt(e)); });
+  cv.addEventListener('pointerup', function () { drag = null; });
+  cv.addEventListener('pointercancel', function () { drag = null; });
+
+  document.getElementById('a-run').addEventListener('click', function () { run(true); });
+  document.getElementById('a-clear').addEventListener('click', function () { walls.fill(0); reset(); });
+  document.getElementById('a-rand').addEventListener('click', function () {
+    for (var i = 0; i < walls.length; i++) walls[i] = Math.random() < 0.27 ? 1 : 0;
+    walls[idx(start.x, start.y)] = 0; walls[idx(goal.x, goal.y)] = 0;
+    reset();
+  });
+  sel.addEventListener('change', function () { noteEl.textContent = NOTES[sel.value]; if (hasRun) run(false); });
+  window.addEventListener('resize', size);
+
+  /* starting layout: two walls with gaps, so the first run has something to solve */
+  for (var y = 0; y <= 9; y++) walls[idx(11, y)] = 1;
+  for (y = 4; y <= 12; y++) walls[idx(17, y)] = 1;
+  noteEl.textContent = NOTES[sel.value];
+  size();
+})();
+</script>
+</body>
+</html>
